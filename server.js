@@ -4,6 +4,7 @@ const path = require ('path');
 const { v4: uuidv4 } = require('uuid');
 const PORT = process.env.PORT || 3001
 const app = express();
+const sequelize = require('./config/connection');
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -55,6 +56,10 @@ app.delete('/api/notes/:id', (req, res) => {
 
 })
 
-app.listen(PORT, () => {
-  console.log(`API server now on port ${PORT}`);
+// app.listen(PORT, () => {
+//   console.log(`API server now on port ${PORT}`);
+
+sequelize.sync({ force: false }).then(() => {
+  app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
+});
 });
